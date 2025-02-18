@@ -1,18 +1,19 @@
 import time
 
-nums = range(1, 1000)
-
-def isPrime(num):
-    if num < 2:
-        return False
-    for x in range(2, int(num ** 0.5) + 1):  # Optimizare: verificăm doar până la rădăcina pătrată a numărului
-        if num % x == 0:
-            return False
-    return True
+def sieve(limit):
+    primes = [True] * (limit + 1)
+    primes[0], primes[1] = False, False  # 0 și 1 nu sunt prime
+    
+    for num in range(2, int(limit ** 0.5) + 1):
+        if primes[num]:
+            for multiple in range(num * num, limit + 1, num):
+                primes[multiple] = False
+                
+    return [num for num, is_prime in enumerate(primes) if is_prime]
 
 start_time = time.time()
 
-primes = list(filter(isPrime, nums))
+primes = sieve(1000)
 
 end_time = time.time()
 
